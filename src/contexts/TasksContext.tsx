@@ -5,8 +5,8 @@ import { tasksService } from "../services/api";
 export interface TasksContextData {
     tasks: Task[],
     createTask: (attributes: Omit<Task, "id">) => Promise<void>,
-    updateTask: (id: number, attributes: Omit<Task, "id">) => Promise<void>,
-    deleteTask: (id: number) => Promise<void>
+    updateTask: (id: string, attributes: Omit<Task, "id">) => Promise<void>,
+    deleteTask: (id: string) => Promise<void>
 }
 
 export const TasksContext = createContext({} as TasksContextData);
@@ -26,20 +26,24 @@ export const TasksContextProvider: React.FC<TasksContextProvaiderProps> = ({ chi
 
     const createTask = async (atrributes: Omit<Task, "id">) => {
         const newTask = await tasksService.createTask(atrributes);
+        setTasks((currentState) => [...currentState, newTask])
+    }
+
+    const updateTask = async (id: string, attributes: Partial<Omit<Task, "id">>) => {
+        await tasksService.updateTask(id, attributes);
         setTasks((currentState) => {
-            const updatedTasks = [...currentState, newTask];
+            const updatedTasks = [...currentState];
+            const taskIndex = updatedTasks.findIndex((task) => task.id === id);
+            Object.assign(updatedTasks[taskIndex], attributes);
             return updatedTasks;
         })
-        return newTask;
     }
 
-    const updateTask = async (id: number, attributes: Partial<Omit<Task, "id">>) => {
-
+    const deleteTask = async (id: string) => {
+        await tasksService.deleteTask(id);
+        setTasks((currentState) => currentState.filter((task) => task.id !== id));
     }
 
-    const deleteTask = async (id: number) => {
-
-    }
     return (
         <TasksContext.Provider value={{ tasks, createTask, updateTask, deleteTask }} >
             {children}

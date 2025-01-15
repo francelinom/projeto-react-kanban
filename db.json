@@ -25,14 +25,7 @@
       "id": "4",
       "title": "Implementar testes",
       "description": "Desenvolver os testes automatizados na nova funcionalidade do aplicativo.",
-      "status": "todo",
-      "priority": "medium"
-    },
-    {
-      "id": "cbda",
-      "title": "Post",
-      "description": "criando tarefa com endpoint",
-      "status": "doing",
+      "status": "done",
       "priority": "medium"
     }
   ]
