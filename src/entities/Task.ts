@@ -3,7 +3,7 @@ export type TaskStatus = "todo" | "doing" | "done";
 export interface Task {
     id: number;
     title: string;
-    descripition: string;
+    description: string;
     status: TaskStatus;
     priority: TaskPriority;
 }

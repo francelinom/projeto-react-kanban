@@ -1,0 +1,70 @@
+import React from "react";
+import { Task } from "../entities/Task";
+import { Badge, Flex, Grid, ScrollArea } from "@radix-ui/themes";
+import { TaskCard } from "./TaskCard";
+
+
+export const TaskBoard: React.FC = () => {
+    const tasksTodo: Task[] = [
+        {
+            "id": 2,
+            "title": "Reunião com a equipe",
+            "description": "Reunião para discutir o progresso do projeto e próximos passos.",
+            "status": "todo",
+            "priority": "high"
+        },
+        {
+            "id": 4,
+            "title": "Implementar testes",
+            "description": "Desenvolver os testes automatizados na nova funcionalidade do aplicativo.",
+            "status": "todo",
+            "priority": "medium"
+        }
+    ];
+    const tasksInPrograss: Task[] = [
+        {
+            "id": 1,
+            "title": "Enviar relatório",
+            "description": "Enviar o relatório mensal para o departamento financeiro.",
+            "status": "doing",
+            "priority": "high"
+        },
+    ];
+    const tasksDone: Task[] = [
+        {
+            "id": 3,
+            "title": "Atualizar o site",
+            "description": "Fazer atualizações no site da empresa com novas informações.",
+            "status": "done",
+            "priority": "medium"
+        },
+    ];
+
+    return (
+        <ScrollArea scrollbars="horizontal">
+            <Grid columns={"3"} gap={"4"} minWidth={"64rem"}>
+                <Flex direction={"column"} gap={"4"}>
+                    <Badge size={"3"} color="gray">
+                        Para Fazer ({tasksDone.length})
+                    </Badge>
+                    {tasksTodo.map((task) => <TaskCard key={task.id} task={task} />)}
+                </Flex>
+
+                <Flex direction={"column"} gap={"4"}>
+                    <Badge size={"3"} color="yellow">
+                        Em Progresso({tasksInPrograss.length})
+                    </Badge>
+                    {tasksInPrograss.map((task) => <TaskCard key={task.id} task={task} />)}
+                </Flex>
+
+                <Flex direction={"column"} gap={"4"}>
+                    <Badge size={"3"} color="green">
+                        Concluídas ({tasksDone.length})
+                    </Badge>
+                    {tasksDone.map((task) => <TaskCard key={task.id} task={task} />)}
+                </Flex>
+            </Grid>
+        </ScrollArea>
+
+    )
+}
