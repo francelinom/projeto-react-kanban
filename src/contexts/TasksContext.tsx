@@ -4,7 +4,7 @@ import { tasksService } from "../services/api";
 
 export interface TasksContextData {
     tasks: Task[],
-    createTask: (attributes: Omit<Task, "id">) => Promise<Task>,
+    createTask: (attributes: Omit<Task, "id">) => Promise<void>,
     updateTask: (id: number, attributes: Omit<Task, "id">) => Promise<void>,
     deleteTask: (id: number) => Promise<void>
 }
@@ -22,10 +22,14 @@ export const TasksContextProvider: React.FC<TasksContextProvaiderProps> = ({ chi
         tasksService.fetchTasks().then((data) => {
             setTasks(data);
         })
-    })
+    }, [])
 
-    const createTask = async () => {
-        const newTask: Task = { id: 100, title: "testes", description: "testes", status: "todo", priority: "high" };
+    const createTask = async (atrributes: Omit<Task, "id">) => {
+        const newTask = await tasksService.createTask(atrributes);
+        setTasks((currentState) => {
+            const updatedTasks = [...currentState, newTask];
+            return updatedTasks;
+        })
         return newTask;
     }
 
